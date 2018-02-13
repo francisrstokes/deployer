@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npm run test:lint && jest index.test.js",
     "test:lint": "eslint *.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "pm2": "pm2 restart ecosystem.config.js --update-env"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +17,8 @@
     "dotenv": "^5.0.0",
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.4.0"
+    "koa-router": "^7.4.0",
+    "pm2": "^2.9.3"
   },
   "devDependencies": {
     "jest": "^22.2.2",
