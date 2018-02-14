@@ -25,7 +25,7 @@ router
   try {
     const startTime = new Date();
     logger.info(`Deployment started at: ${startTime}`);
-    const {stdout, stderr} = await exec(`sh scripts/${script}`);
+    const {stdout, stderr} = await exec(`sh scripts/${script}`, {env: process.env});
     const endTime = new Date();
     logger.info(`Deployment finished at: ${endTime}`);
     logger.info(`stdout: ${stdout}`);

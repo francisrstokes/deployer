@@ -3,5 +3,7 @@
 const defaults = require('./defaults');
 
 module.exports = {
-  ...defaults
+  ...defaults,
+  trustedToken: 'trustedToken',
+  script: `deploy.sh`
 };

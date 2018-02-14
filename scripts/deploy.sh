@@ -15,9 +15,6 @@ echo loading moonshot
 docker load -i ./dist/moonshot.tar
 echo done
 
-# exports env variables from the .env file
-sed -E -n 's/[^#]+/export &/ p' ./.env
-
 echo composing
 docker-compose -f ./dist/docker-compose.yml up -d --no-build
 echo done
