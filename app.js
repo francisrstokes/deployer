@@ -27,8 +27,8 @@ router
     logger.info(`Deployment started at: ${startTime}`);
     const {stdout, stderr} = await exec(`sh scripts/${script}`, {env: process.env});
     const endTime = new Date();
-    logger.info(`Deployment finished at: ${endTime}`);
     logger.info(`stdout: ${stdout}`);
+    logger.info(`Deployment finished at: ${endTime}`);
     ctx.body =
       ['start', startTime, 'end', endTime, 'stdout', stdout, 'stderr ', stderr].join('\n\n');
   } catch(e) {
