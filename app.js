@@ -25,7 +25,6 @@ router
   try {
     const startTime = new Date();
     logger.info(`Deployment started at: ${startTime}`);
-    logger.info(process.env);
     const {stdout, stderr} = await exec(`sh scripts/${script}`, {env: process.env});
     const endTime = new Date();
     logger.info(`stdout: ${stdout}`);
@@ -33,7 +32,8 @@ router
     ctx.body =
       ['start', startTime, 'end', endTime, 'stdout', stdout, 'stderr ', stderr].join('\n\n');
   } catch(e) {
-    logger.error(e);
+    logger.error(JSON.stringify(e, null, '  '));
+    logger.info(`Deployment failed`);
     ctx.throw(500, 'Internal error');
   }
 });
