@@ -12,9 +12,10 @@ tar xvzf ./dist/moonshot-docker.tar.gz -C ./dist
 echo done
 
 echo loading moonshot
+docker rmi health-works/moonshot -f
 docker load -i ./dist/moonshot.tar
 echo done
 
 echo composing
-docker-compose -f ./dist/docker-compose.yml up -d --no-build
+ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml up -d --no-build
 echo done
