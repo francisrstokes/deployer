@@ -2,7 +2,7 @@
 
 const defaults = require('./defaults');
 
-module.exports = Object.assign({
+module.exports = Object.assign({}, defaults, {
   trustedToken: 'trustedToken',
   script: `deploy.sh`
-}, defaults);
+});
