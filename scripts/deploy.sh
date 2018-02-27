@@ -16,6 +16,8 @@ docker rmi health-works/moonshot -f
 docker load -i ./dist/moonshot.tar
 echo done
 
+ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml down
+
 echo composing
 ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml up -d --no-build --no-recreate
 echo done
