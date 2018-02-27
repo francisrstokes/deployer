@@ -5,8 +5,7 @@ const defaults = require('./defaults');
 
 defaults.logger.level(bunyan.FATAL + 1);
 
-module.exports = {
-  ...defaults,
+module.exports = Object.assign({
   trustedToken: 'trustedToken',
   script: 'test.sh'
-};
+}, defaults);

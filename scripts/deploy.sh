@@ -17,5 +17,5 @@ docker load -i ./dist/moonshot.tar
 echo done
 
 echo composing
-ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml up -d --no-build
+ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml up -d --no-build --no-recreate
 echo done
