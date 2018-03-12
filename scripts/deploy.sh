@@ -20,5 +20,5 @@ echo compose down
 ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml down
 
 echo compose up
-ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml up -d --no-build --no-recreate
+ENV_FILE=../.env docker-compose -f ./dist/docker-compose.yml up -d --no-build --force-recreate
 echo done
