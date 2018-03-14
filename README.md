@@ -15,7 +15,12 @@ Install aws cli and configure to access health-works bucket.
  - AWS_ACCESS_KEY_ID
 
 APIs
-POST /v1.0.0/deployments
+Deploy a docker-compose app (currently only supports moonshot)
+POST /v1.0.0/deployments?type=compose
 Body: { accessToken: "accessToken" }
+
+Deploy a dockerized app using the docker hub user "notphilips"
+POST /v1.0.0/deployments
+Body: { accessToken: "accessToken", appName: "as2", port: 8080 }
 
 Note: This does not handle concurrent deployments

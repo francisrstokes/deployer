@@ -4,6 +4,7 @@ const request = require('supertest');
 
 const app = require('./app');
 
+// Deprecated
 describe('Deployer', () => {
   describe('POST Deploy', () => {
     it('Should execute bash script and return its output', async () => {
