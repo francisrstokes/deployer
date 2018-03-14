@@ -4,7 +4,9 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const {exec} = require('child-process-promise');
-const {script, trustedToken, logger} = require('./config');
+const {trustedToken, logger} = require('./config');
+
+const supportedApps = ['as2', 'pi'];
 
 const router = new Router({
   prefix: `/v1.0.0/deployments`
@@ -24,8 +26,27 @@ router
 .post('/', async ctx => {
   try {
     const startTime = new Date();
+    const {type} = ctx.request.query;
+
     logger.info(`Deployment started at: ${startTime}`);
-    const {stdout, stderr} = await exec(`sh scripts/${script}`, {env: process.env});
+
+    let env;
+    let script;
+
+    if(type !== 'dockerCompose') {
+      const {appName, port} = ctx.request.body;
+      if (!supportedApps.includes(appName)) {
+        logger.info(`App not supported: ${appName}`);
+        ctx.throw(400, `App not supported: ${appName}`);
+      }
+      env = {APPNAME: appName, PORT: port};
+      script = 'singleDocker.sh';
+    } else {
+      env = process.env;
+      script = 'dockerCompose.sh';
+    }
+
+    const {stdout, stderr} = await exec(`sh scripts/${script}`, {env});
     const endTime = new Date();
     logger.info(`stdout: ${stdout}`);
     logger.info(`Deployment finished at: ${endTime}`);
