@@ -3,6 +3,9 @@
 echo removing the old image
 docker rmi notphilips/"$APPNAME":latest -f
 
+echo signing in
+docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+
 echo pulling a new image
 docker pull notphilips/"$APPNAME":latest
 

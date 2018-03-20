@@ -4,7 +4,8 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const {exec} = require('child-process-promise');
-const {trustedToken, logger} = require('./config');
+const {trustedToken, logger, DOCKER_USERNAME, DOCKER_PASSWORD}
+= require('./config');
 
 const supportedApps = ['as2', 'pi'];
 
@@ -39,7 +40,7 @@ router
         logger.info(`App not supported: ${appName}`);
         ctx.throw(400, `App not supported: ${appName}`);
       }
-      env = {APPNAME: appName, PORT: port};
+      env = {APPNAME: appName, PORT: port, DOCKER_PASSWORD, DOCKER_USERNAME};
       script = 'singleDocker.sh';
     } else {
       env = process.env;
