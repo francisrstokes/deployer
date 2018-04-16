@@ -5,7 +5,8 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const {exec} = require('child-process-promise');
 
-const reducer = (accumulator, currentValue) => `${accumulator}-e ${currentValue[0]}='${currentValue[1]}' `;
+const reducer = (accumulator, currentValue) =>
+  `${accumulator}-e ${currentValue[0]}='${currentValue[1]}' `;
 const dockerizeEnv = env => Object.entries(env).reduce(reducer, '');
 
 const {
@@ -23,7 +24,6 @@ const authenticate = (ctx, next) => {
     return ctx.throw(401, 'Not authorized');
   }
   return next();
-
 };
 
 router
@@ -37,15 +37,13 @@ router
 
     const projectEnv = {
       DOCKER_USERNAME, DOCKER_PASSWORD, AWS_DEFAULT_REGION,
-      AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID, ...ctx.request.body
+      AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID, ...ctx.request.body.env
     };
-
-    const dockerizedEnv = dockerizeEnv(projectEnv);
 
     const script = (type !== 'dockerCompose') ? 'singleDocker.sh' : 'dockerCompose.sh';
 
     const {stdout, stderr} = await exec(
-      `sh scripts/${script}`, {env: {...projectEnv, dockerizedEnv}}
+      `sh scripts/${script}`, {env: projectEnv}
     );
     const endTime = new Date();
     logger.info(`stdout: ${stdout}`);

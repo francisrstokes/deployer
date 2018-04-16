@@ -17,6 +17,6 @@ echo removing the current container
 docker rm "$APPNAME"-container
 
 echo running a new container
-docker run $dockerizedEnv --name="$APPNAME"-container --restart=always -p $PORT:80 -d notphilips/"$APPNAME":latest
+docker run --name="$APPNAME"-container --restart=always -p $PORT:80 -d notphilips/"$APPNAME":latest
 
 echo done
