@@ -17,8 +17,8 @@ docker load -i ./dist/moonshot.tar
 echo done
 
 echo compose down
-docker-compose $dockerizedEnv -f ./dist/docker-compose.yml down
+docker-compose -f ./dist/docker-compose.yml down
 
 echo compose up
-docker-compose $dockerizedEnv -f ./dist/docker-compose.yml up -d --no-build --force-recreate
+docker-compose -f ./dist/docker-compose.yml up -d --no-build --force-recreate
 echo done
