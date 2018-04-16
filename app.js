@@ -4,10 +4,14 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const {exec} = require('child-process-promise');
-const {trustedToken, logger, DOCKER_USERNAME, DOCKER_PASSWORD}
-= require('./config');
 
-const supportedApps = ['as2', 'pi'];
+const reducer = (accumulator, currentValue) => `${accumulator}-e ${currentValue[0]}=${currentValue[1]} `;
+const dockerizeEnv = env => Object.entries(env).reduce(reducer, '');
+
+const {
+  trustedToken, logger, DOCKER_USERNAME, DOCKER_PASSWORD, AWS_DEFAULT_REGION,
+  AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID
+} = require('./config');
 
 const router = new Router({
   prefix: `/v1.0.0/deployments`
@@ -31,23 +35,18 @@ router
 
     logger.info(`Deployment started at: ${startTime}`);
 
-    let env;
-    let script;
+    const projectEnv = {
+      DOCKER_USERNAME, DOCKER_PASSWORD, AWS_DEFAULT_REGION,
+      AWS_SECRET_ACCESS_KEY, AWS_ACCESS_KEY_ID, ...ctx.request.body
+    };
 
-    if(type !== 'dockerCompose') {
-      const {appName, port} = ctx.request.body;
-      if (!supportedApps.includes(appName)) {
-        logger.info(`App not supported: ${appName}`);
-        ctx.throw(400, `App not supported: ${appName}`);
-      }
-      env = {APPNAME: appName, PORT: port, DOCKER_PASSWORD, DOCKER_USERNAME};
-      script = 'singleDocker.sh';
-    } else {
-      env = process.env;
-      script = 'dockerCompose.sh';
-    }
+    const dockerizedEnv = dockerizeEnv(projectEnv);
 
-    const {stdout, stderr} = await exec(`sh scripts/${script}`, {env});
+    const script = (type !== 'dockerCompose') ? 'singleDocker.sh' : 'dockerCompose.sh';
+
+    const {stdout, stderr} = await exec(
+      `sh scripts/${script}`, {env: {...projectEnv, dockerizedEnv}}
+    );
     const endTime = new Date();
     logger.info(`stdout: ${stdout}`);
     logger.info(`Deployment finished at: ${endTime}`);

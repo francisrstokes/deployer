@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo removing the old image
+
 docker rmi notphilips/"$APPNAME":latest -f
 
 echo signing in
@@ -16,6 +17,6 @@ echo removing the current container
 docker rm "$APPNAME"-container
 
 echo running a new container
-docker run --name="$APPNAME"-container --restart=always -p $PORT:80 -d notphilips/"$APPNAME":latest
+docker run $dockerizedEnv --name="$APPNAME"-container --restart=always -p $PORT:80 -d notphilips/"$APPNAME":latest
 
 echo done

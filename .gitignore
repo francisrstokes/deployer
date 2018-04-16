@@ -4,3 +4,6 @@
 # Dist
 /dist/
 .env
+
+# Docker
+.docker
