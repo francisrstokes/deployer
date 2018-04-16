@@ -5,7 +5,7 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const {exec} = require('child-process-promise');
 
-const reducer = (accumulator, currentValue) => `${accumulator}-e ${currentValue[0]}=${currentValue[1]} `;
+const reducer = (accumulator, currentValue) => `${accumulator}-e ${currentValue[0]}='${currentValue[1]}' `;
 const dockerizeEnv = env => Object.entries(env).reduce(reducer, '');
 
 const {
@@ -55,7 +55,7 @@ router
   } catch(e) {
     logger.error(JSON.stringify(e, null, '  '));
     logger.info(`Deployment failed`);
-    ctx.throw(500, 'Internal error');
+    ctx.throw(500, e);
   }
 });
 
